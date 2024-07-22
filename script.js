@@ -1,5 +1,5 @@
-// Function that returns a promise which resolves with an array of numbers after 3 seconds
-function getNumbers() {
+// Create a function that returns a promise which resolves with an array of numbers after 3 seconds
+function getData() {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve([1, 2, 3, 4]);
@@ -7,44 +7,18 @@ function getNumbers() {
   });
 }
 
-// Function to filter out odd numbers
-function filterOddNumbers(numbers) {
-  return new Promise(resolve => {
-    const evenNumbers = numbers.filter(num => num % 2 === 0);
+// Chain the promises
+getData()
+  .then(data => {
+    // Filter out odd numbers
+    const evenNumbers = data.filter(num => num % 2 === 0);
+    document.getElementById("output").innerText = evenNumbers.join(", ");
+    return evenNumbers;
+  })
+  .then(evenNumbers => {
+    // Multiply even numbers by 2
+    const doubledNumbers = evenNumbers.map(num => num * 2);
     setTimeout(() => {
-      updateOutput(evenNumbers);
-      resolve(evenNumbers);
-    }, 1000);
-  });
-}
-
-// Function to multiply even numbers by 2
-function multiplyEvenNumbers(numbers) {
-  return new Promise(resolve => {
-    const multipliedNumbers = numbers.map(num => num * 2);
-    setTimeout(() => {
-      updateOutput(multipliedNumbers);
-      resolve(multipliedNumbers);
+      document.getElementById("output").innerText = doubledNumbers.join(", ");
     }, 2000);
   });
-}
-
-// Update the text content of the div with the id 'output'
-function updateOutput(content) {
-  const outputDiv = document.getElementById('output');
-  outputDiv.textContent = content.join(', ');
-}
-
-// Execute the promise chain
-getNumbers()
-  .then(numbers => filterOddNumbers(numbers))
-  .then(evenNumbers => multiplyEvenNumbers(evenNumbers))
-  .catch(error => console.error('Error:', error));
-
-// For testing purposes, trigger the promise chain on window load
-window.onload = function () {
-  getNumbers()
-    .then(numbers => filterOddNumbers(numbers))
-    .then(evenNumbers => multiplyEvenNumbers(evenNumbers))
-    .catch(error => console.error('Error:', error));
-};
