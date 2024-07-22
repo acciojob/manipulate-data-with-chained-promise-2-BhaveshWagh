@@ -1,4 +1,4 @@
-function getData() {
+async function getData() {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve([1, 2, 3, 4]);
@@ -6,17 +6,14 @@ function getData() {
   });
 }
 
-getData()
- .then(data => {
-    const evenNumbers = data.filter(num => num % 2 === 0);
-    setTimeout(() => {
-      document.getElementById("output").innerText = evenNumbers.join(", ");
-    }, 1000);
-    return evenNumbers;
-  })
- .then(evenNumbers => {
-    const doubledNumbers = evenNumbers.map(num => num * 2);
-    setTimeout(() => {
-      document.getElementById("output").innerText = doubledNumbers.join(", ");
-    }, 2000);
-  });
+async function transformData() {
+  const data = await getData();
+  const evenNumbers = data.filter(num => num % 2 === 0);
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  document.getElementById("output").innerText = evenNumbers.join(", ");
+  const doubledNumbers = evenNumbers.map(num => num * 2);
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  document.getElementById("output").innerText = doubledNumbers.join(", ");
+}
+
+transformData();
