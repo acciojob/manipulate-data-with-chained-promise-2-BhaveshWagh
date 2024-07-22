@@ -1,4 +1,5 @@
-async function getData() {
+// Function that returns a promise which resolves with an array of numbers after 3 seconds
+function getNumbers() {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve([1, 2, 3, 4]);
@@ -6,14 +7,44 @@ async function getData() {
   });
 }
 
-async function transformData() {
-  const data = await getData();
-  const evenNumbers = data.filter(num => num % 2 === 0);
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  document.getElementById("output").innerText = evenNumbers.join(", ");
-  const doubledNumbers = evenNumbers.map(num => num * 2);
-  await new Promise(resolve => setTimeout(resolve, 2000));
-  document.getElementById("output").innerText = doubledNumbers.join(", ");
+// Function to filter out odd numbers
+function filterOddNumbers(numbers) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const evenNumbers = numbers.filter(num => num % 2 === 0);
+      resolve(evenNumbers);
+    }, 1000);
+  });
 }
 
-transformData();
+// Function to multiply even numbers by 2
+function multiplyEvenNumbers(numbers) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const multipliedNumbers = numbers.map(num => num * 2);
+      resolve(multipliedNumbers);
+    }, 2000);
+  });
+}
+
+// Update the text content of the div with the id 'output'
+function updateOutput(content) {
+  const outputDiv = document.getElementById('output');
+  outputDiv.textContent = content.join(', ');
+}
+
+// Execute the promise chain
+getNumbers()
+  .then(numbers => {
+    return filterOddNumbers(numbers).then(evenNumbers => {
+      updateOutput(evenNumbers); // Update after filtering odd numbers
+      return evenNumbers;
+    });
+  })
+  .then(evenNumbers => {
+    return multiplyEvenNumbers(evenNumbers).then(multipliedNumbers => {
+      updateOutput(multipliedNumbers); // Update after multiplying even numbers by 2
+      return multipliedNumbers;
+    });
+  })
+  .catch(error => console.error('Error:', error));
