@@ -30,7 +30,7 @@ function multiplyEvenNumbers(numbers) {
 
 // Update the text content of the div with the id 'output'
 function updateOutput(content) {
-  const outputDiv = document.getElementById('output');
+  const outputDiv = document.querySelector('#output');
   outputDiv.textContent = content.join(', ');
 }
 
