@@ -1,44 +1,40 @@
-// Function that returns a promise resolving with an array after 3 seconds
 function getNumbers() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([1, 2, 3, 4]);
-    }, 3000);
-  });
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve([1, 2, 3, 4]);
+        }, 3000);
+    });
 }
 
-// Function to simulate a delay
-function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-// Function to update the output div with the provided text
+// Function to update the text of the output div
 function updateOutput(text) {
-  document.getElementById('output').innerText = text;
+    document.getElementById('output').textContent = text;
 }
 
-// Main async function to handle the chaining of promises
-async function processNumbers() {
-  const numbers = await getNumbers(); // Wait for the numbers to be retrieved
-  
-  await delay(1000); // Wait 1 second before filtering
+// Chain the promises
+getNumbers()
+    .then(numbers => {
+        // Filter out odd numbers after 1 second
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const evens = numbers.filter(num => num % 2 === 0);
+                updateOutput(evens.join(',')); // Update with even numbers
+                resolve(evens);
+            }, 1000);
+        });
+    })
+    .then(evens => {
+        // Multiply even numbers by 2 after another 2 seconds
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const doubled = evens.map(num => num * 2);
+                updateOutput(doubled.join(',')); // Update with doubled numbers
+                resolve(doubled);
+            }, 2000);
+        });
+    });
 
-  // Filter out odd numbers and update the output
-  const evenNumbers = numbers.filter(num => num % 2 === 0);
-  updateOutput(evenNumbers.join(', '));
-
-  await delay(2000); // Wait another 2 seconds before multiplying
-
-  // Multiply even numbers by 2 and update the output
-  const doubledEvenNumbers = evenNumbers.map(num => num * 2);
-  updateOutput(doubledEvenNumbers.join(', '));
-}
-
-// Call the main function to start the process
-processNumbers();
-
-
-// old code
+// // old code
 // // Function that returns a promise resolving with an array after 1 second
 // function getNumbers() {
 //   return new Promise((resolve) => {
