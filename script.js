@@ -56,7 +56,7 @@ getNumbers()
     return new Promise((resolve) => {
       setTimeout(() => {
         const evenNumbers = numbers.filter(num => num % 2 === 0);
-        updateOutput(evenNumbers.join(', '));
+        updateOutput(evenNumbers.join(','));
         resolve(evenNumbers);
       }, 1000);
     });
@@ -66,7 +66,7 @@ getNumbers()
     return new Promise((resolve) => {
       setTimeout(() => {
         const doubledEvenNumbers = evenNumbers.map(num => num * 2);
-        updateOutput(doubledEvenNumbers.join(', '));
+        updateOutput(doubledEvenNumbers.join(','));
         resolve(doubledEvenNumbers);
       }, 2000);
     });
